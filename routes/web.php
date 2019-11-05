@@ -12,5 +12,5 @@
 */
 
 Route::get('/', function () {
-    return "No hay vista";
+    return "Hola Daniel";
 });
