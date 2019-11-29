@@ -19,6 +19,7 @@ class User extends Authenticatable
         'name', 'email', 'password', 'id', 'last_name', 'user', 'status', 'role', 'cell_phone_number'
     ];
 
+    public $incrementing = false;
     /**
      * The attributes that should be hidden for arrays.
      *

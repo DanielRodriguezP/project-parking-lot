@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegisterEmail;
 
 class UserController extends Controller
 {
@@ -14,7 +16,8 @@ class UserController extends Controller
 
     public function addUser(Request $request){
         $request->validate(['id' => 'required|unique:users', 'email' => 'required|unique:users']);
-        return User::create([
+        
+        $user = User::create([
             "name" => $request->name, 
             "email" => $request->email, 
             "password" => $request->password, 
@@ -23,8 +26,12 @@ class UserController extends Controller
             "user" => $request->user, 
             "role" => $request->role, 
             "cell_phone_number" => $request->cell_phone_number,
-            "status" => $request->status
+            "status" => $request->status,
+            "role" => 1
         ]);
+
+        Mail::to($request->email)->send(new RegisterEmail($user));
+        return response()->json(["message" => "Register email sent successfully"], 200);
     }
 
 
@@ -39,7 +46,7 @@ class UserController extends Controller
         $user->role = $request->role;
         $user->cell_phone_number = $request->cell_phone_number;
         $user->save();
-        return response()->json("e actualizo el usuario satisfactoriamente", 200);
+        return response()->json("Se actualizo el usuario satisfactoriamente", 200);
     }
 
     public function deleteUserById($id){
@@ -48,7 +55,12 @@ class UserController extends Controller
        return response()->json("Se ha eliminado", 200);
     }
 
-}
+    public function login(Request $request){
+        
+        
+    }
+
+} 
 
 
 
